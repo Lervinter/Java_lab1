@@ -1,2 +1,3 @@
 # Java_lab1
- Library code
+ Student PD-33
+Kirill Kuzmenko
