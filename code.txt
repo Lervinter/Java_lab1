@@ -1,0 +1,135 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Book {
+    private String title;
+    private String author;
+    private String isbn;
+    private int year;
+
+    public Book(String title, String author, String isbn, int year) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+        this.year = year;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    @Override
+    public String toString() {
+        return "Назва: " + title + "\nАвтор: " + author + "\nISBN: " + isbn + "\nРік видання: " + year + "\n";
+    }
+}
+
+class Library {
+    private ArrayList<Book> books = new ArrayList<>();
+
+    public void addBook(Book book) {
+        books.add(book);
+    }
+
+    public void displayBooks() {
+        if (books.isEmpty()) {
+            System.out.println("Бібліотека порожня.");
+        } else {
+            for (Book book : books) {
+                System.out.println(book);
+            }
+        }
+    }
+
+    public Book searchByTitle(String title) {
+        for (Book book : books) {
+            if (book.getTitle().equalsIgnoreCase(title)) {
+                return book;
+            }
+        }
+        return null;
+    }
+
+    public void removeBookByISBN(String isbn) {
+        books.removeIf(book -> book.getIsbn().equals(isbn));
+    }
+}
+
+public class LibraryManagementSystem {
+    public static void main(String[] args) {
+        Library library = new Library();
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("1. Додати книгу");
+            System.out.println("2. Відобразити всі книги");
+            System.out.println("3. Пошук книги за назвою");
+            System.out.println("4. Видалити книгу за ISBN");
+            System.out.println("5. Вихід");
+            System.out.print("Введіть свій вибір: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();  // Витягти символ нового рядка
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Введіть назву: ");
+                    String title = scanner.nextLine();
+                    System.out.print("Введіть автора: ");
+                    String author = scanner.nextLine();
+                    System.out.print("Введіть ISBN: ");
+                    String isbn = scanner.nextLine();
+                    System.out.print("Введіть рік видання: ");
+                    int year = scanner.nextInt();
+
+                    Book newBook = new Book(title, author, isbn, year);
+                    library.addBook(newBook);
+                    System.out.println("Книгу успішно додано!");
+                    break;
+
+                case 2:
+                    library.displayBooks();
+                    break;
+
+                case 3:
+                    System.out.print("Введіть назву для пошуку: ");
+                    String searchTitle = scanner.nextLine();
+                    Book foundBook = library.searchByTitle(searchTitle);
+
+                    if (foundBook != null) {
+                        System.out.println("Знайдена книга:\n" + foundBook);
+                    } else {
+                        System.out.println("Книгу не знайдено.");
+                    }
+                    break;
+
+                case 4:
+                    System.out.print("Введіть ISBN для видалення: ");
+                    String removeISBN = scanner.nextLine();
+                    library.removeBookByISBN(removeISBN);
+                    System.out.println("Книгу успішно видалено!");
+                    break;
+
+                case 5:
+                    System.out.println("Вихід з програми.");
+                    System.exit(0);
+                    break;
+
+                default:
+                    System.out.println("Невірний вибір. Будь ласка, введіть дійсну опцію.");
+            }
+        }
+    }
+}
